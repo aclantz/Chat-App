@@ -9,58 +9,89 @@ import {
 } from "react-native";
 import { useState } from "react";
 
+const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
+
 const Start = ({ navigation }) => {
   const [name, setName] = useState("");
   const [color, setColor] = useState("");
 
-  // const colorPress = async (value) => {
-  //   value ? setColor(value) : setColor("");
-  //   console.log("colorPress log ->", color);
-  // };
+  const colorPress = (value) => {
+    setColor(value);
+    console.log("colorPress log ->", color);
+  };
 
   return (
     <View style={styles.container}>
       <ImageBackground
         source={require("./backgroundImg.png")}
         resizeMode="cover"
-        style={styles.bgImage}
-      >
-      <View style={styles.box}>
-      <Text>Welcome to Chat!</Text>
-      <TextInput
-        style={styles.textInput}
-        value={name}
-        onChangeText={setName}
-        placeholder="Type your username here"
-      />
-      <Text>Choose a background color.</Text>
-      <View style={styles.tOContainer}>
-        <TouchableOpacity
-          style={[styles.tOpacityColors, styles.tO1]}
-          value="grey"
-          // onPress={colorPress("grey")}
-          onPress={() => navigation.navigate("Chat", { color: color })}
-        />
-        <TouchableOpacity
-          style={[styles.tOpacityColors, styles.tO2]}
-          value="beige"
-          // onPress={colorPress("beige")}
-          onPress={() => navigation.navigate("Chat", { color: color })}
-        />
-        <TouchableOpacity
-          style={[styles.tOpacityColors, styles.tO3]}
-          value="blue"
-          // onPress={colorPress("blue")}
-          onPress={() => navigation.navigate("Chat", { color: color })}
-        />
-      </View>
-      <Button
-        title="Sign In"
-        style={styles.button}
-        onPress={() => navigation.navigate("Chat", { name: name })}
-      />
-      </View>
-     </ImageBackground>
+        style={styles.bgImage}>
+        <Text style={styles.heading}>Welcome to Chat!</Text>
+        <View style={styles.box}>
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+            placeholder="Your Name"
+          />
+          <Text>Choose a background color.</Text>
+          <View style={styles.colorButtonContainer}>
+            <TouchableOpacity
+              style={[
+                styles.colorButton,
+                {
+                  backgroundColor: colors[0],
+                  width: color === colors[0] ? 30 : 20,
+                  height: color === colors[0] ? 30 : 20,
+                },
+              ]}
+              onPress={() => colorPress(colors[0])}
+              // onPress={() => navigation.navigate("Chat", { color: color })}
+            />
+            <TouchableOpacity
+              style={[
+                styles.colorButton,
+                {
+                  backgroundColor: colors[1],
+                  width: color === colors[1] ? 30 : 20,
+                  height: color === colors[1] ? 30 : 20,  
+                },
+              ]}
+              onPress={() => colorPress(colors[1])}
+              // onPress={() => navigation.navigate("Chat", { color: color })}
+            />
+            <TouchableOpacity
+              style={[
+                styles.colorButton,
+                {
+                  backgroundColor: colors[2],
+                  width: color === colors[2] ? 30 : 20,
+                  height: color === colors[2] ? 30 : 20,
+                },
+              ]}
+              onPress={() => colorPress(colors[2])}
+              // onPress={() => navigation.navigate("Chat", { color: color })}
+            />
+            <TouchableOpacity
+              style={[
+                styles.colorButton,
+                {
+                  backgroundColor: colors[3],
+                  width: color === colors[3] ? 30 : 20,
+                  height: color === colors[3] ? 30 : 20,
+                },
+              ]}
+              onPress={() => colorPress(colors[3])}
+              // onPress={() => navigation.navigate("Chat", { color: color })}
+            />
+          </View>
+          <Button
+            title="Start Chatting"
+            style={styles.button}
+            onPress={() => navigation.navigate("Chat", { name: name })}
+          />
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -80,11 +111,16 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  heading: {
+    fontSize: 45,
+    fontWeight: 600,
+    fontColor: "#ffffff",
+  },
   //Layer 3
   box: {
     flex: 1,
-    width: '60%',
-    // height: "60%",
+    width: "88%",
+    height: "44%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
@@ -97,38 +133,29 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     borderRadius: "10%",
-
   },
+  // I don't know why this button does not look lke a button
   button: {
-    alignItems: 'center',
-    backgroundColor: '#757083',
+    alignItems: "center",
+    backgroundColor: "#757083",
     borderRadius: 4,
-    height: '20%',
-    justifyContent: 'center',
+    height: "20%",
+    justifyContent: "center",
     padding: 10,
-    width: '88%',
+    width: "88%",
   },
   //Layer 4
-  tOContainer: {
+  colorButtonContainer: {
     flex: 1,
     flexDirection: "row",
   },
-  tOpacityColors: {
+  colorButton: {
     width: 20,
     height: 20,
     borderRadius: "50%",
-    backgroundColor: "blue",
+    backgroundColor: "blue", //placeholder color for tests
     margin: 20,
     flexDirection: "row",
-  },
-  tO1: {
-    backgroundColor: "#afb3bc",
-  },
-  tO2: {
-    backgroundColor: "#b89b88",
-  },
-  tO3: {
-    backgroundColor: "#6c8ca4",
   },
 });
 
