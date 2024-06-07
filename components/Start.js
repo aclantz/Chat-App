@@ -54,7 +54,7 @@ const Start = ({ navigation }) => {
                 {
                   backgroundColor: colors[1],
                   width: SelectedColor === colors[1] ? 30 : 20,
-                  height: SelectedColor === colors[1] ? 30 : 20,  
+                  height: SelectedColor === colors[1] ? 30 : 20,
                 },
               ]}
               onPress={() => colorPress(colors[1])}
@@ -85,7 +85,9 @@ const Start = ({ navigation }) => {
           <Button
             title="Start Chatting"
             style={styles.button}
-            onPress={() => navigation.navigate("Chat", { name: name, color: SelectedColor })}
+            onPress={() =>
+              navigation.navigate("Chat", { name: name, bgColor: SelectedColor })
+            }
           />
         </View>
       </ImageBackground>
@@ -111,11 +113,10 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 45,
     fontWeight: 600,
-    fontColor: "#ffffff",
+    color: "#ffffff",
   },
   //Layer 3
   box: {
-    flex: 1,
     width: "88%",
     height: "44%",
     justifyContent: "center",

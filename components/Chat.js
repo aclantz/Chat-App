@@ -1,17 +1,15 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Chat = ({ route, navigation }) => {
-  const { name, selectedColor } = route.params;
-  // const [bgColor, setBgColor] = useState("")
+  const { name, bgColor } = route.params;
 
   useEffect(() => {
     navigation.setOptions({ title: name });
-    // setBgColor({ selectedColor });
   }, []);
 
  return (
-   <View style={[styles.container, {backgroundColor: selectedColor ? selectedColor : "white"}]}>
+   <View style={[styles.container, {backgroundColor: bgColor ? bgColor : "white"}]}>
      <Text>Hello Screen2!</Text>
    </View>
  );
