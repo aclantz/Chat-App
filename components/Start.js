@@ -13,11 +13,12 @@ const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState("");
-  const [color, setColor] = useState("");
+  const [SelectedColor, setSelectedColor] = useState("");
 
+  // handle background color selection
   const colorPress = (value) => {
-    setColor(value);
-    console.log("colorPress log ->", color);
+    setSelectedColor(value);
+    console.log("colorPress log ->", SelectedColor);
   };
 
   return (
@@ -41,54 +42,50 @@ const Start = ({ navigation }) => {
                 styles.colorButton,
                 {
                   backgroundColor: colors[0],
-                  width: color === colors[0] ? 30 : 20,
-                  height: color === colors[0] ? 30 : 20,
+                  width: SelectedColor === colors[0] ? 30 : 20,
+                  height: SelectedColor === colors[0] ? 30 : 20,
                 },
               ]}
               onPress={() => colorPress(colors[0])}
-              // onPress={() => navigation.navigate("Chat", { color: color })}
             />
             <TouchableOpacity
               style={[
                 styles.colorButton,
                 {
                   backgroundColor: colors[1],
-                  width: color === colors[1] ? 30 : 20,
-                  height: color === colors[1] ? 30 : 20,  
+                  width: SelectedColor === colors[1] ? 30 : 20,
+                  height: SelectedColor === colors[1] ? 30 : 20,  
                 },
               ]}
               onPress={() => colorPress(colors[1])}
-              // onPress={() => navigation.navigate("Chat", { color: color })}
             />
             <TouchableOpacity
               style={[
                 styles.colorButton,
                 {
                   backgroundColor: colors[2],
-                  width: color === colors[2] ? 30 : 20,
-                  height: color === colors[2] ? 30 : 20,
+                  width: SelectedColor === colors[2] ? 30 : 20,
+                  height: SelectedColor === colors[2] ? 30 : 20,
                 },
               ]}
               onPress={() => colorPress(colors[2])}
-              // onPress={() => navigation.navigate("Chat", { color: color })}
             />
             <TouchableOpacity
               style={[
                 styles.colorButton,
                 {
                   backgroundColor: colors[3],
-                  width: color === colors[3] ? 30 : 20,
-                  height: color === colors[3] ? 30 : 20,
+                  width: SelectedColor === colors[3] ? 30 : 20,
+                  height: SelectedColor === colors[3] ? 30 : 20,
                 },
               ]}
               onPress={() => colorPress(colors[3])}
-              // onPress={() => navigation.navigate("Chat", { color: color })}
             />
           </View>
           <Button
             title="Start Chatting"
             style={styles.button}
-            onPress={() => navigation.navigate("Chat", { name: name })}
+            onPress={() => navigation.navigate("Chat", { name: name, color: SelectedColor })}
           />
         </View>
       </ImageBackground>
