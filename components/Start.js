@@ -6,6 +6,8 @@ import {
   TextInput,
   ImageBackground,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
 
@@ -38,6 +40,9 @@ const Start = ({ navigation }) => {
           <Text>Choose a background color.</Text>
           <View style={styles.colorButtonContainer}>
             <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Background color option"
+              accessibilityHint="Let's you choose a background color for the chat screen."
               style={[
                 styles.colorButton,
                 {
@@ -49,6 +54,9 @@ const Start = ({ navigation }) => {
               onPress={() => colorPress(colors[0])}
             />
             <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Background color option"
+              accessibilityHint="Let's you choose a background color for the chat screen."
               style={[
                 styles.colorButton,
                 {
@@ -60,6 +68,9 @@ const Start = ({ navigation }) => {
               onPress={() => colorPress(colors[1])}
             />
             <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Background color option"
+              accessibilityHint="Let's you choose a background color for the chat screen."
               style={[
                 styles.colorButton,
                 {
@@ -71,6 +82,9 @@ const Start = ({ navigation }) => {
               onPress={() => colorPress(colors[2])}
             />
             <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Background color option"
+              accessibilityHint="Let's you choose a background color for the chat screen."
               style={[
                 styles.colorButton,
                 {
@@ -82,13 +96,20 @@ const Start = ({ navigation }) => {
               onPress={() => colorPress(colors[3])}
             />
           </View>
-          <Button
+          {/* Start Chat Button*/}
+          <TouchableOpacity
+          accessible={true}
+          accessibilityLabel="Button"
+          accessibilityHint="Allows you to go to the chat screen."
             title="Start Chatting"
             style={styles.button}
             onPress={() =>
               navigation.navigate("Chat", { name: name, bgColor: SelectedColor })
             }
-          />
+          >
+            <Text style={styles.buttonText}>Start Chatting</Text>
+          </TouchableOpacity>
+          {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
         </View>
       </ImageBackground>
     </View>
@@ -136,11 +157,17 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "#757083",
-    borderRadius: 4,
+    borderRadius: "10%",
     height: "20%",
     justifyContent: "center",
     padding: 10,
     width: "88%",
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: '600',
   },
   //Layer 4
   colorButtonContainer: {
