@@ -10,17 +10,35 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
+// Firebase Auth
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
 
 const Start = ({ navigation }) => {
+  const auth = getAuth();
   const [name, setName] = useState("");
   const [SelectedColor, setSelectedColor] = useState("");
 
-  // handle background color selection
+  // Firebase auth sign in
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then((result) => {
+        navigation.navigate("Chat", {
+          name: name,
+          bgColor: SelectedColor,
+          userID: result.user.uid,
+        });
+        Alert.alert("Signed in Successfully!");
+      })
+      .catch((error) => {
+        Alert.alert("Unable to sign in, try again later.");
+      });
+  };
+
+  // Handle background color selection
   const colorPress = (value) => {
     setSelectedColor(value);
-    console.log("colorPress log ->", SelectedColor);
   };
 
   return (
@@ -98,18 +116,17 @@ const Start = ({ navigation }) => {
           </View>
           {/* Start Chat Button*/}
           <TouchableOpacity
-          accessible={true}
-          accessibilityLabel="Button"
-          accessibilityHint="Allows you to go to the chat screen."
+            accessible={true}
+            accessibilityLabel="Button"
+            accessibilityHint="Allows you to go to the chat screen."
             title="Start Chatting"
             style={styles.button}
-            onPress={() =>
-              navigation.navigate("Chat", { name: name, bgColor: SelectedColor })
-            }
-          >
+            onPress={signInUser}>
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
-          {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
+          {Platform.OS === "ios" ? (
+            <KeyboardAvoidingView behavior="padding" />
+          ) : null}
         </View>
       </ImageBackground>
     </View>
@@ -117,13 +134,13 @@ const Start = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  //Layer 1
+  // Layer 1
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  //Layer 2
+  // Layer 2
   bgImage: {
     flex: 1,
     justifyContent: "center",
@@ -136,7 +153,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: "#ffffff",
   },
-  //Layer 3
+  // Layer 3
   box: {
     width: "88%",
     height: "44%",
@@ -153,7 +170,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: "10%",
   },
-  // I don't know why this button does not look lke a button
   button: {
     alignItems: "center",
     backgroundColor: "#757083",
@@ -167,9 +183,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
-  //Layer 4
+  // Layer 4
   colorButtonContainer: {
     flex: 1,
     flexDirection: "row",
@@ -186,4 +202,3 @@ const styles = StyleSheet.create({
 
 export default Start;
 
-//gray #59636f beige #b89b88 blue #6c8ca4 light grey #afb3bc

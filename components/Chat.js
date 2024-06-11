@@ -6,62 +6,68 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useEffect, useState } from "react";
-// import chat interface
+// Chat interface
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
+// Firestore DB
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
-
-const Chat = ({ route, navigation }) => {
-  const { name, bgColor } = route.params;
+const Chat = ({ route, navigation, db }) => {
+  const { name, bgColor, userID } = route.params;
   const [messages, setMessages] = useState([]);
 
-  // filler messages to use for testing in app
+  // Fetch messages from DB
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: name + " has entered the chat",
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc")); //returns messages in descending order of "createdAt"
+    const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+      let newMessages = [];
+      documentsSnapshot.forEach((doc) => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date(doc.data().createdAt.toMillis()),
+        });
+      });
+      setMessages(newMessages);
+    });
+
+    // Clean up code
+    return () => {
+      if (unsubMessages) unsubMessages(); 
+    };
   }, []);
 
-  // navigation settings, necessary for app nav as a whole, name prop passed between start.js and chat.js
+  // Navigation settings
   useEffect(() => {
     navigation.setOptions({ title: name });
   }, []);
 
-  //define onSend function, need for messaging
+  // Send messages to DB
   const onSend = (newMessages) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+    addDoc(collection(db, "messages"), newMessages[0]);
   };
 
-  // function to change chat bubble color
+  // Function to change chat bubble color
   const renderBubble = (props) => {
-    return <Bubble
-      {...props}
-      wrapperStyle={{
-        right: {
-          backgroundColor: "#000"
-        },
-        left: {
-          backgroundColor: "#FFF"
-        }
-      }}
-    />
-  }
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "#000",
+          },
+          left: {
+            backgroundColor: "#FFF",
+          },
+        }}
+      />
+    );
+  };
 
   return (
     <View
@@ -74,7 +80,8 @@ const Chat = ({ route, navigation }) => {
         renderBubble={renderBubble}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userID,
+          name: name,
         }}
       />
       {Platform.OS === "android" ? (
@@ -91,3 +98,40 @@ const styles = StyleSheet.create({
 });
 
 export default Chat;
+
+//working on chat bubble color changing with bgColor
+
+// const colorSchema = [
+//   //bgColor options
+//   {
+//     background: "#090C08",//dark
+//     rightBubble: "#...",
+//     leftBubble: "#...",
+//     systemMessage: "#...",
+//   },
+//   {
+//     background: "#474056",//purple
+//     rightBubble: "#...",
+//     leftBubble: "#...",
+//     systemMessage: "#...",
+//   },
+//   {
+//     background: "#8A95A5",//blue
+//     rightBubble: "#...",
+//     leftBubble: "#...",
+//     systemMessage: "#...",
+//   },
+//   {
+//     background: "#B9C6AE",//green
+//     rightBubble: "#...",
+//     leftBubble: "#...",
+//     systemMessage: "#...",
+//   },
+//   //option if nothing selected
+//   {
+//     background: "#fff",//white
+//     rightBubble: "#000",//black
+//     leftBubble: "#...",
+//     systemMessage: "#...",
+//   },
+// ];
