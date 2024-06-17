@@ -19,8 +19,12 @@ import {
 } from "firebase/firestore";
 // Async storage
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import other screens
+import CustomActions from "./CustomActions";
+// Map actions
+import MapView from "react-native-maps";
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
   const { name, bgColor, userID } = route.params;
   const [messages, setMessages] = useState([]);
 
@@ -63,10 +67,9 @@ const Chat = ({ route, navigation, db, isConnected }) => {
   };
   // load cache
   const loadCachedMessages = async () => {
-    const cachedMessages = await AsyncStorage.getItem("messages") || [];
+    const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
     setMessages(JSON.parse(cachedMessages));
   };
-
 
   // Navigation settings
   useEffect(() => {
@@ -101,6 +104,38 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     else return null;
   };
 
+  // extra functionality through custom Actions
+  const renderCustomActions = (props) => {
+    return (
+      <CustomActions
+        accessible={true}
+        accessibilityLabel="Action Item List"
+        accessibilityHint="Let's you choose an action item, like loading a photo into chat."
+        storage={storage}
+        userID={userID}
+        {...props}
+      />
+    );
+  };
+
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <View
       style={[
@@ -109,6 +144,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       ]}>
       <GiftedChat
         messages={messages}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
         onSend={(messages) => onSend(messages)}

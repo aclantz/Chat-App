@@ -7,13 +7,14 @@ import Chat from "./components/Chat";
 // Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// Initialize firestore DB
+// Firestore DB
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   disableNetwork,
   enableNetwork,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 // NetInfo
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -46,6 +47,8 @@ const App = () => {
   const app = initializeApp(firebaseConfig);
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
+  // Initialize storage for photoPicker
+  const storage = getStorage(app);
 
   return (
     <NavigationContainer>
@@ -56,6 +59,7 @@ const App = () => {
             <Chat
               isConnected={connectionStatus.isConnected}
               db={db}
+              storage={storage}
               {...props}
             />
           )}
