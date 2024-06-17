@@ -83,19 +83,49 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
   // Change chat bubble color
   const renderBubble = (props) => {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          right: {
-            backgroundColor: "#000",
-          },
-          left: {
-            backgroundColor: "#FFF",
-          },
-        }}
-      />
-    );
+    if (!bgColor) {
+      return (
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            right: {
+              backgroundColor: "#000",
+            },
+            left: {
+              backgroundColor: "#f7fafb",
+            },
+          }}
+        />
+      );
+    } else if (bgColor === "#090C08") {
+      return (
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            right: {
+              backgroundColor: "gray",
+            },
+            left: {
+              backgroundColor: "#fff",
+            },
+          }}
+        />
+      );
+    } else {
+      return (
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            right: {
+              backgroundColor: "#000",
+            },
+            left: {
+              backgroundColor: "#FFF",
+            },
+          }}
+        />
+      );
+    }
   };
 
   // render or !render InputTool Bar depending on Connection

@@ -47,7 +47,7 @@ const App = () => {
   const app = initializeApp(firebaseConfig);
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
-  // Initialize storage for photoPicker
+  // Initialize storage for CustomActions component
   const storage = getStorage(app);
 
   return (

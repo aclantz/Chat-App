@@ -34,7 +34,7 @@ const Start = ({ navigation }) => {
       .catch((error) => {
         Alert.alert("Unable to sign in, try again later.");
       });
-  };
+  }
 
   // Handle background color selection
   const colorPress = (value) => {
