@@ -41,3 +41,13 @@ and location data.
 - Location data must be sent via the chat in a map view.
 - The chat interface and functionality must be created using the Gifted Chat library.
 - The app’s codebase must contain comments.
+
+### Installation
+- close repository
+- Install node(v16.19.0)
+- Install expo `npm install -g expo-cli`
+- download Expo app on mobile device or emulator
+- `npm start` to run expo and use application on Expo app 
+
+### thoughts on achievement
+This was my first time building a mobile application. I enjoyed adding communication features like photo sharing and geo-location. It was a nice introduction to using react-native and seeing how my experience with JS and React both easily transfer to mobile architecture.  
